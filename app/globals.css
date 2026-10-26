@@ -1,26 +1,381 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Yalla Wash design system tokens (from the design canvas's tokens.json). */
+@theme {
+  --font-sans: var(--font-baloo), system-ui, sans-serif;
+
+  --color-navy-900: #0b1f3a;
+  --color-navy-700: #13294a;
+  --color-navy-500: #24406a;
+  --color-navy-400: #2e4c78;
+  --color-navy-edge: #020a15;
+  --color-teal-400: #19d3be;
+  --color-teal-500: #0fb5a3;
+  --color-teal-600: #0c9a8b;
+  --color-teal-700: #0a7c70;
+  --color-aqua-100: #bff0e8;
+  --color-mint-50: #eef8f6;
+
+  --color-surface: #ffffff;
+  --color-surface-alt: #eef8f6;
+  --color-ink: #0b1f3a;
+  --color-ink-muted: #4a5b70;
+  --color-ink-soft: #24405f;
+  --color-ink-on-navy: #9fb3c8;
+  --color-border: #c9d5e0;
+  --color-border-strong: #6b7c90;
+  --color-border-on-navy: #8fa3ba;
+  --color-hairline: #eef2f6;
+  --color-track: #dce4ec;
+
+  --color-primary: #19d3be;
+  --color-primary-hover: #3adbc8;
+  --color-primary-edge: #0a8f82;
+  --color-primary-tint: #f2fcfa;
+  --color-danger-fill: #ff8f85;
+  --color-danger-edge: #c9443a;
+  --color-disabled-fill: #dce3ea;
+  --color-disabled-edge: #bac6d2;
+  --color-disabled-ink: #5e6e82;
+
+  --color-success: #0a7c70;
+  --color-warning: #9a5b00;
+  --color-danger: #c53030;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-button: 18px;
+  --radius-lg: 24px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-navy-900);
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* In the base layer so component styles (buttons, cards that are links) win over it. */
+@layer base {
+  a {
+    color: var(--color-teal-700);
+  }
+  a:hover {
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-teal-700);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Bubble Pop buttons: a solid 3D edge that disappears on press. */
+  .bp {
+    position: relative;
+    overflow: hidden;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--color-ink);
+    height: 58px;
+    padding: 0 24px;
+    border-radius: 18px;
+    font-size: 18px;
+    text-decoration: none;
+    box-sizing: border-box;
+    white-space: nowrap;
+    transition:
+      transform 110ms ease-out,
+      box-shadow 110ms ease-out;
+  }
+  .bp:hover {
+    color: var(--color-ink);
+  }
+  .bp:focus-visible {
+    outline-offset: 4px;
+  }
+  .bp > * {
+    position: relative;
+  }
+  .bp .bub {
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+  }
+  .bp-md {
+    height: 52px;
+    padding: 0 18px;
+    border-radius: 16px;
+    font-size: 17px;
+  }
+  .bp-sm {
+    height: 46px;
+    padding: 0 12px;
+    border-radius: 14px;
+    font-size: 15px;
+  }
+  .bp-icon {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+
+  .bp-teal {
+    background: var(--color-primary);
+    box-shadow:
+      0 5px 0 var(--color-primary-edge),
+      0 12px 18px -6px rgb(11 31 58 / 0.35);
+  }
+  .bp-teal:hover {
+    background: var(--color-primary-hover);
+  }
+  .bp-teal .bub {
+    background: rgb(255 255 255 / 0.5);
+  }
+  .bp-teal:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 var(--color-primary-edge);
+  }
+
+  .bp-white {
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 2px var(--color-border),
+      0 4px 0 var(--color-border);
+  }
+  .bp-white:active {
+    transform: translateY(4px);
+    box-shadow: inset 0 0 0 2px var(--color-border);
+  }
+  .bp-white.on-navy {
+    box-shadow: 0 5px 0 var(--color-border-on-navy);
+  }
+  .bp-white.on-navy:active {
+    box-shadow: 0 0 0 var(--color-border-on-navy);
+  }
+  .bp-white.on-navy:focus-visible {
+    outline-color: var(--color-teal-400);
+  }
+
+  .bp-danger {
+    background: var(--color-danger-fill);
+    box-shadow:
+      0 5px 0 var(--color-danger-edge),
+      0 12px 18px -6px rgb(201 68 58 / 0.35);
+  }
+  .bp-danger:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 var(--color-danger-edge);
+  }
+
+  .bp:disabled,
+  .bp[aria-disabled="true"] {
+    cursor: not-allowed;
+    background: var(--color-disabled-fill);
+    color: var(--color-disabled-ink);
+    box-shadow: 0 5px 0 var(--color-disabled-edge);
+    transform: none;
+  }
+  .bp:disabled .bub,
+  .bp[aria-disabled="true"] .bub {
+    display: none;
+  }
+
+  /* Cards in the Bubble Pop style: 2px outline and a solid edge. */
+  .card-pop {
+    background: #fff;
+    border-radius: 22px;
+    box-shadow:
+      inset 0 0 0 2px var(--color-border),
+      0 5px 0 var(--color-border);
+  }
+
+  /* Selectable cards (car size, package). */
+  .opt {
+    position: relative;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--color-ink);
+    text-align: left;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 2px var(--color-border),
+      0 5px 0 var(--color-border);
+    transition:
+      transform 110ms ease-out,
+      box-shadow 110ms ease-out;
+  }
+  .opt:active {
+    transform: translateY(4px);
+  }
+  .opt[aria-checked="true"] {
+    background: var(--color-primary-tint);
+    box-shadow:
+      inset 0 0 0 3px var(--color-primary),
+      0 5px 0 var(--color-primary-edge);
+  }
+  .opt:focus-visible {
+    outline-offset: 4px;
+  }
+
+  /* Toggle chips, days and time slots: pressed-in when selected. */
+  .chip {
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--color-ink);
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 2px var(--color-border),
+      0 4px 0 var(--color-border);
+    transition:
+      transform 110ms ease-out,
+      box-shadow 110ms ease-out;
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-checked="true"] {
+    background: var(--color-primary);
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--color-primary-edge);
+  }
+  .chip:disabled {
+    cursor: not-allowed;
+    background: var(--color-hairline);
+    color: var(--color-border-strong);
+    text-decoration: line-through;
+    box-shadow: none;
+  }
+
+  /* Segmented control (queue / slot). */
+  .seg {
+    flex: 1;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--color-ink-muted);
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    transition:
+      transform 110ms ease-out,
+      box-shadow 110ms ease-out;
+  }
+  .seg[aria-selected="true"] {
+    color: var(--color-ink);
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 2px var(--color-primary),
+      0 3px 0 var(--color-primary-edge);
+  }
+
+  /* On/off switch. */
+  .switch {
+    border: 0;
+    cursor: pointer;
+    width: 52px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    padding: 3px;
+    display: flex;
+    justify-content: flex-start;
+    background: var(--color-border);
+    box-shadow: inset 0 -2px 0 #a9b7c6;
+    transition: background 120ms;
+  }
+  .switch[aria-checked="true"] {
+    justify-content: flex-end;
+    background: var(--color-primary);
+    box-shadow: inset 0 -2px 0 var(--color-primary-edge);
+  }
+  .switch > span {
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 2px 0 rgb(11 31 58 / 0.2);
+  }
+
+  /* Inputs with a small 3px edge. */
+  .field {
+    font-family: inherit;
+    height: 52px;
+    box-sizing: border-box;
+    border-radius: 14px;
+    border: 2px solid var(--color-border-strong);
+    box-shadow: 0 3px 0 var(--color-border);
+    padding: 0 14px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-ink);
+    background: #fff;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-teal-700);
+    box-shadow: 0 3px 0 var(--color-primary-edge);
+  }
+  .field[aria-invalid="true"] {
+    border-color: var(--color-danger);
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .skeleton {
+    background: var(--color-hairline);
+    border-radius: 14px;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
 }
